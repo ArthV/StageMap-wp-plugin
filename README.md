@@ -1,0 +1,1 @@
+# StageMap-wp-plugin
