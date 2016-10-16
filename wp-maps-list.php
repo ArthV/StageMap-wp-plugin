@@ -42,7 +42,7 @@ function create_table() {
     $html = "";
     $html .= "<center><div id=\"map\" style=\"width: 500px;height: 500px;position: fixed;top: 0;\"> </div></center>";
     $html .= "<script type=\"text/javascript\" src=\"http://stagesolidaire.campus.ecp.fr/wp-content/plugins/wp-maps-list/wp-maps-list.js\"> </script>";
-    $html .= "<script type=\"text/javascript\" src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyB1nKCopxGIQq8aqnL_3l0AiFp488_gYMQ&signed_in=true&callback=initMap\"> </script>";
+    $html .= "<script type=\"text/javascript\" src=\"https://maps.googleapis.com/maps/api/js?key=&signed_in=true&callback=initMap\"> </script>";
 
     // The table below will be filled by the internships which belong to the
     // database
