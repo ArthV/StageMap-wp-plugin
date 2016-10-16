@@ -19,12 +19,16 @@ function enqueue_javascripts() {
     wp_enqueue_script('jquery');
     wp_enqueue_script('readmore',$currentDns."/wp-content/plugins/wp-maps-list/lib/readmore.js", array());
     wp_enqueue_script('fittext', $currentDns."wp-content/plugins/wp-maps-list/lib/FitText.js/jquery.fittext.js", array());
+    $map_nonce = wp_create_nonce( 'map_nonce' );
+    wp_localize_script( 'add-stage', 'my_ajax_obj', array(
+    'ajax_url' => admin_url( 'admin-ajax.php' ),
+    'nonce'    => $map_nonce));
 }
 
 /*
  * @return table with marker information
  */
-function list_placemarker(){
+function list_mapmarker(){
         global $wpdb;
 
         $table_name = $wpdb->prefix . "map_market";
@@ -51,5 +55,53 @@ function html_map() {
 }
 
 add_shortcode( 'mapmarker', 'html_map');// add shortcode to use map in wordpress
+
+
+/*
+ * Ajax Part : All functions to create, delete, display marker
+ */
+
+/*
+ *
+ */
+
+add_action( 'wp_ajax_delete_marker', 'delete_marker');
+function delete_marker() {
+    global $wpdb;
+    global $current_user;
+    $table_name = $wpdb->prefix . "map_market";
+
+    $marker_id = $_POST['id'];
+    $marker = $wpdb->get_row($wpdb->prepare("SELECT i.* FROM $table_name i WHERE i.id=%s", $marker_id))
+
+    if ($current_user->ID == $marker->user_id) {
+
+        $wpdb->delete( 'intern', array( 'id' => $intern_id));
+    }
+
+    wp_die();
+}
+
+add_action( 'wp_ajax_add_marker', 'add_marker' );
+function add_marker() {
+    global $wpdb;
+    global $current_user;
+    $table_name = $wpdb->prefix . "map_market";
+
+    // Handle the ajax request
+    $user_id = $current_user->ID;
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $position = $_POST['position'];
+
+    $query_string = $wpdb->prepare("INSERT INTO $table_name (user_id, title, description, position) VALUES (%d, %s, %s, %s)", array($user_id, $title, $description, $position));
+    $query_result = $wpdb->query($query_string);
+    wp_die(); // All ajax handlers die when finished
+}
+
+
+
+
+
 
 ?>
