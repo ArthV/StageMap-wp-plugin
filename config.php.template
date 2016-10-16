@@ -1,0 +1,7 @@
+<?php
+
+//Configuration file in order to define all the global variable
+global $currentDns = ; // Your Dns example: "http://localhost/"
+global $APIkey = ; // Your Google API key to map 
+
+?>
